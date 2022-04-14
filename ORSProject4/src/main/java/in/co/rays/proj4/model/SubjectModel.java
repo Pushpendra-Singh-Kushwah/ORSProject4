@@ -150,6 +150,10 @@ public class SubjectModel {
 	public void update(SubjectBean bean) throws ApplicationException {
 		log.debug("Model update Started");
 		Connection conn = null;
+		
+		CourseModel courseModel = new CourseModel();
+		CourseBean courseBean = courseModel.findByPk(bean.getCourse_Id());
+		String courseName = courseBean.getCourse_Name();
 
 		try {
 			conn = JDBCDataSource.getConnection();
@@ -157,7 +161,7 @@ public class SubjectModel {
 			PreparedStatement ps = conn.prepareStatement(
 					"UPDATE ST_SUBJECT SET Subject_Name=?,Course_NAME=?,Course_ID=?,Discription=?,CREATED_BY=?,MODIFIED_BY=?,CREATED_DATETIME=?,MODIFIED_DATETIME=? WHERE ID=?");
 			ps.setString(1, bean.getSubject_Name());
-			ps.setString(2, bean.getCourse_Name());
+			ps.setString(2,courseName);
 			ps.setInt(3, bean.getCourse_Id());
 			ps.setString(4, bean.getDiscription());
 			ps.setString(5, bean.getCreatedBy());

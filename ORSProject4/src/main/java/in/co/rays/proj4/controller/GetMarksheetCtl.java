@@ -92,13 +92,12 @@ public class GetMarksheetCtl extends BaseCtl {
         // get model
         MarksheetModel model = new MarksheetModel();
 
-        MarksheetBean bean = (MarksheetBean) populateBean(request);
-
         long id = DataUtility.getLong(request.getParameter("id"));
 
         if (OP_GO.equalsIgnoreCase(op)) {
 
             try {
+            	MarksheetBean bean = (MarksheetBean) populateBean(request);
                 bean = model.findByRollNo(bean.getRollNo());
                 if (bean != null) {
                     ServletUtility.setBean(bean, request);
@@ -113,6 +112,12 @@ public class GetMarksheetCtl extends BaseCtl {
             }
 
         }
+        
+      if (OP_RESET.equalsIgnoreCase(op)) {
+			ServletUtility.redirect(ORSView.GET_MARKSHEET_CTL, request, response);
+			return;
+		}
+        
         ServletUtility.forward(getView(), request, response);
         log.debug("MarksheetCtl Method doGet Ended");
     }

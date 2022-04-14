@@ -36,18 +36,13 @@ public class TimeTableListCtl extends BaseCtl {
 	protected void preload(HttpServletRequest request) {
 
 		CourseModel crsm = new CourseModel();
-		SubjectModel stm = new SubjectModel();
 		List<CourseBean> list = null;
-		List<SubjectBean> list2 = null;
 		try {
 			list = crsm.list();
-			list2 = stm.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		request.setAttribute("courseList", list);
-		request.setAttribute("subjectList", list2);
-
 	}
 
 	protected BaseBean populateBean(HttpServletRequest request) {
@@ -55,8 +50,9 @@ public class TimeTableListCtl extends BaseCtl {
 
 //		bean.setId(DataUtility.getLong(request.getParameter("id")));
 		tb.setCourse_Id(DataUtility.getInt(request.getParameter("clist")));
-		tb.setSubject_Id(DataUtility.getInt(request.getParameter("slist")));
-	//	bean.setSubjectName(DataUtility.getString(request.getParameter("slist")));
+		//tb.setSubject_Name(DataUtility.getString(request.getParameter("subname")));
+		tb.setSubject_Name(DataUtility.getString(request.getParameter("subname")));
+	//	bean.setSubjectName(DataUtility.getString(request.getParameter("subname")));
 		tb.setExam_Date(DataUtility.getDate(request.getParameter("Exdate")));
 	//	System.out.println("populate bean==========>>>> " + bean.getExamDate());
 		populateDTO(tb, request);

@@ -54,8 +54,8 @@ public class SubjectListCtl extends BaseCtl {
 		SubjectBean bean = new SubjectBean();
 
 		bean.setId(DataUtility.getLong(request.getParameter("subjectname")));
-		bean.setCourse_Id(DataUtility.getInt(request.getParameter("coursename")));
-
+		bean.setCourse_Name(DataUtility.getString(request.getParameter("courseName")));
+		
 		populateDTO(bean, request);
 		return bean;
 	}

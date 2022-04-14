@@ -189,4 +189,23 @@ public class DataValidator {
     					return false;
 					}	
     		}
+    
+    /**
+     * check if value is Roll no.
+     *
+     * @param val the val
+     * @return true, if is roll no
+     */
+    public static boolean isRollNo(String val){
+    	
+    	String roll = "^[A-Z]{1}[0-9]{3,6}$";
+    
+    			if (DataValidator.isNotNull(roll)) {
+   					boolean check = val.matches(roll);
+                    		return check;
+    				}else
+    				{	
+    					return false;
+   					}	
+    		}
 }

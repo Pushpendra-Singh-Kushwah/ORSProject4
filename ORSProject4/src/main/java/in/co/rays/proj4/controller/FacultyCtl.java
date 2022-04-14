@@ -222,6 +222,7 @@ public class FacultyCtl extends BaseCtl {
 
 			}else{
 			long pk = model.add(bean);
+			ServletUtility.setBean(bean, request);
 		//		bean.setId(pk);
 			}
 			ServletUtility.setSuccessMessage("Faculty Successfully Register", request);

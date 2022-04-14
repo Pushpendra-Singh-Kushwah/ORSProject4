@@ -11,10 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import in.co.rays.proj4.bean.BaseBean;
+import in.co.rays.proj4.bean.CourseBean;
 import in.co.rays.proj4.bean.MarksheetBean;
+import in.co.rays.proj4.bean.StudentBean;
 import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.exception.DatabaseException;
+import in.co.rays.proj4.model.CourseModel;
 import in.co.rays.proj4.model.MarksheetModel;
+import in.co.rays.proj4.model.StudentModel;
 import in.co.rays.proj4.util.DataUtility;
 import in.co.rays.proj4.util.PropertyReader;
 import in.co.rays.proj4.util.ServletUtility;
@@ -30,12 +34,25 @@ public class MarksheetListCtl extends BaseCtl {
 
     private static Logger log = Logger.getLogger(MarksheetListCtl.class);
 
+    protected void preload(HttpServletRequest request) {
+
+		StudentModel model = new StudentModel();
+		List<StudentBean> clist = null;
+
+		try {
+			clist = model.list();
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		}
+		request.setAttribute("StudentList", clist);
+	}
+    
     @Override
     protected BaseBean populateBean(HttpServletRequest request) {
         MarksheetBean bean = new MarksheetBean();
 
         bean.setRollNo(DataUtility.getString(request.getParameter("rollNo")));
-
+        bean.setId(DataUtility.getLong(request.getParameter("sname")));
         bean.setName(DataUtility.getString(request.getParameter("name")));
 
         return bean;
@@ -125,6 +142,10 @@ public class MarksheetListCtl extends BaseCtl {
                 ServletUtility.redirect(ORSView.MARKSHEET_CTL, request,
                         response);
                 return;
+            }else if (OP_RESET.equalsIgnoreCase(op)) {
+                ServletUtility.redirect(ORSView.MARKSHEET_LIST_CTL, request,
+                        response);
+                return;
             } else if (OP_DELETE.equalsIgnoreCase(op)) {
                 pageNo = 1;
                 if (ids != null && ids.length > 0) {
@@ -133,6 +154,7 @@ public class MarksheetListCtl extends BaseCtl {
                         deletebean.setId(DataUtility.getInt(id));
                         try {
 							model.delete(deletebean);
+							ServletUtility.setSuccessMessage("Marksheet delete Successfully", request);
 						} catch (DatabaseException e) {
 							e.printStackTrace();
 						}

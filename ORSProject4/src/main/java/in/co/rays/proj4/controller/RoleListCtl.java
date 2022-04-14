@@ -49,6 +49,7 @@ public class RoleListCtl extends BaseCtl {
     protected BaseBean populateBean(HttpServletRequest request) {
         RoleBean bean = new RoleBean();
         bean.setId(DataUtility.getLong(request.getParameter("roleid")));
+        bean.setDescription(DataUtility.getString(request.getParameter("Description")));
       //  System.out.println("name>>>>>>"+request.getParameter("name"));
 
         return bean;

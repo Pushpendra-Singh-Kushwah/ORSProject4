@@ -13,9 +13,11 @@ import org.apache.log4j.Logger;
 import in.co.rays.proj4.bean.BaseBean;
 import in.co.rays.proj4.bean.CourseBean;
 import in.co.rays.proj4.bean.StudentBean;
+import in.co.rays.proj4.bean.UserBean;
 import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.exception.DatabaseException;
 import in.co.rays.proj4.model.StudentModel;
+import in.co.rays.proj4.model.UserModel;
 import in.co.rays.proj4.util.DataUtility;
 import in.co.rays.proj4.util.PropertyReader;
 import in.co.rays.proj4.util.ServletUtility;
@@ -29,13 +31,26 @@ import in.co.rays.proj4.util.ServletUtility;
 public class StudentListCtl extends BaseCtl {
 
     private static Logger log = Logger.getLogger(StudentListCtl.class);
+    
+    protected void preload(HttpServletRequest request) {
+
+		StudentModel model = new StudentModel();
+		List<StudentBean> clist = null;
+
+		try {
+			clist = model.list();
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		}
+		request.setAttribute("StudentList", clist);
+	}
 
     @Override
     protected BaseBean populateBean(HttpServletRequest request) {
 
         StudentBean bean = new StudentBean();
 
-        bean.setFirstName(DataUtility.getString(request
+        bean.setId(DataUtility.getInt(request
                 .getParameter("firstName")));
         bean.setLastName(DataUtility.getString(request.getParameter("lastName")));
         bean.setEmail(DataUtility.getString(request.getParameter("email")));

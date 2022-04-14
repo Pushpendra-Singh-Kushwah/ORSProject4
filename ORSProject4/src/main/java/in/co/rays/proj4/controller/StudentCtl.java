@@ -173,7 +173,7 @@ public class StudentCtl extends BaseCtl {
 
         long id = DataUtility.getLong(request.getParameter("id"));
 
-        if (OP_SAVE.equalsIgnoreCase(op)) {
+        if (OP_SAVE.equalsIgnoreCase(op) || OP_UPDATE.equalsIgnoreCase(op)) {
 
             StudentBean bean = (StudentBean) populateBean(request);
 

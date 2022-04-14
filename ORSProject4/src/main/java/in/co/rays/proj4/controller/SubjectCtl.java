@@ -139,7 +139,7 @@ public class SubjectCtl extends BaseCtl {
 		//		bean.setId(pk);
 			}
 			ServletUtility.setBean(bean, request);
-			ServletUtility.setSuccessMessage(" Subject is Succesfully Update ", request);
+			ServletUtility.setSuccessMessage(" Subject is Succesfully Added ", request);
 		}catch(ApplicationException e){
 			log.error(e);
 			ServletUtility.handleException(e, request, response);

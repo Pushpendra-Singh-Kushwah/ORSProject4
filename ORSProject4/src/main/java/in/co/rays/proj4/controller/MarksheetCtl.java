@@ -51,10 +51,12 @@ public class MarksheetCtl extends BaseCtl {
         boolean pass = true;
 
         if (DataValidator.isNull(request.getParameter("rollNo"))) {
-            request.setAttribute("rollNo",
-                    PropertyReader.getValue("error.require", "Roll Number"));
+            request.setAttribute("rollNo", PropertyReader.getValue("error.require", "Roll Number"));
             pass = false;
-        }
+        }else if (!DataValidator.isRollNo(request.getParameter("rollNo"))) {
+        	request.setAttribute("rollNo", PropertyReader.getValue("error.require", "Valid Roll Number"));
+            pass = false;
+		}
 
         if (DataValidator.isNotNull(request.getParameter("physics"))
                 && !DataValidator.isInteger(request.getParameter("physics"))) {
@@ -66,8 +68,8 @@ public class MarksheetCtl extends BaseCtl {
                     PropertyReader.getValue("error.require", "Marks"));
             pass = false;
         }
-        if (DataUtility.getInt(request.getParameter("physics")) > 100) {
-            request.setAttribute("physics", "Marks can not be greater than 100");
+        if (DataUtility.getInt(request.getParameter("physics")) > 100 || DataUtility.getInt(request.getParameter("physics")) < 0) {
+            request.setAttribute("physics", "Marks can not be greater than 100 and less than 0");
             pass = false;
         }
 
@@ -82,9 +84,9 @@ public class MarksheetCtl extends BaseCtl {
             pass = false;
 		}
 
-        if (DataUtility.getInt(request.getParameter("chemistry")) > 100) {
+        if (DataUtility.getInt(request.getParameter("chemistry")) > 100 || DataUtility.getInt(request.getParameter("chemistry")) < 0) {
             request.setAttribute("chemistry",
-                    "Marks can not be greater than 100");
+                    "Marks can not be greater than 100 and less than 0");
             pass = false;
         }
 
@@ -99,13 +101,13 @@ public class MarksheetCtl extends BaseCtl {
             pass = false;
 		}
 
-        if (DataUtility.getInt(request.getParameter("maths")) > 100) {
-            request.setAttribute("maths", "Marks can not be greater than 100");
+        if (DataUtility.getInt(request.getParameter("maths")) > 100 || DataUtility.getInt(request.getParameter("maths")) < 0) {
+            request.setAttribute("maths", "Marks can not be greater than 100 and less than 0");
             pass = false;
         }
 
-        if (DataValidator.isNull(request.getParameter("studentId"))) {
-            request.setAttribute("studentId",
+        if (DataValidator.isNull(request.getParameter("sname"))) {
+            request.setAttribute("sname",
                     PropertyReader.getValue("error.require", "Student Name"));
             pass = false;
         }
@@ -134,7 +136,7 @@ public class MarksheetCtl extends BaseCtl {
 
         bean.setMaths(DataUtility.getInt(request.getParameter("maths")));
 
-        bean.setStudentId(DataUtility.getLong(request.getParameter("studentId")));
+        bean.setStudentId(DataUtility.getLong(request.getParameter("sname")));
 
         populateDTO(bean, request);
 
@@ -184,11 +186,12 @@ public class MarksheetCtl extends BaseCtl {
 
         long id = DataUtility.getLong(request.getParameter("id"));
 
-        if (OP_SAVE.equalsIgnoreCase(op)) {
+        if (OP_SAVE.equalsIgnoreCase(op) || OP_UPDATE.equalsIgnoreCase(op)) {
 
             MarksheetBean bean = (MarksheetBean) populateBean(request);
             try {
                 if (id > 0) {
+                	System.out.println("1");
 						model.update(bean);
                 } else {
                     long pk= 0;

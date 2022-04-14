@@ -223,6 +223,11 @@ public class MarksheetModel {
 	public void update(MarksheetBean bean) throws ApplicationException, DatabaseException {
 		log.debug("Model update Started");
 		Connection conn = null;
+		
+		 StudentModel sModel = new StudentModel();
+	        StudentBean studentbean = sModel.findByPK(bean.getStudentId());
+	        bean.setName(studentbean.getFirstName() + " "
+	                + studentbean.getLastName());
 
 		try {
 			conn = JDBCDataSource.getConnection();

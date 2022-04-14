@@ -116,12 +116,14 @@ public class CourseCtl extends BaseCtl {
 		try{
 			if(id>0){		
 					model.update(bean);
+					ServletUtility.setBean(bean, request);
+					ServletUtility.setSuccessMessage("Course is Successfully updated", request);
 			}else{
 				 long pk = model.add(bean);
+				 ServletUtility.setBean(bean, request);
+				 ServletUtility.setSuccessMessage("Course is Successfully Added", request);
 			//		bean.setId(pk);
 			}
-				ServletUtility.setBean(bean, request);
-			ServletUtility.setSuccessMessage("Course is Successfully Update", request);
 		
 		}catch(ApplicationException e ){
 			e.printStackTrace();
@@ -133,7 +135,7 @@ public class CourseCtl extends BaseCtl {
 			ServletUtility.setErrorMessage("Course Name Already Exist", request);
 			
 		}		
-		}else if (OP_DELETE.equalsIgnoreCase(op)) {
+		}/*else if (OP_DELETE.equalsIgnoreCase(op)) {
 			CourseBean bean =(CourseBean) populateBean(request);
 			try {
 				model.delete(bean);
@@ -144,7 +146,7 @@ public class CourseCtl extends BaseCtl {
 				ServletUtility.handleException(e, request, response);
 				return ;
 			}
-		}
+		}*/
 		else if (OP_CANCEL.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.COURSE_LIST_CTL, request, response);
 			return;

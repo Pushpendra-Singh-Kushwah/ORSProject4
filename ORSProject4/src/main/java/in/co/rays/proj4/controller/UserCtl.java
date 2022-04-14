@@ -61,14 +61,21 @@ public class UserCtl extends BaseCtl {
             request.setAttribute("firstName",
                     PropertyReader.getValue("error.require", "First Name"));
             pass = false;
+        }else if (!DataValidator.isValidName(request.getParameter("firstName"))) {
+        	request.setAttribute("firstName",
+                    PropertyReader.getValue("error.require", "First Name"));
+            pass = false;
         }
-
         if (DataValidator.isNull(request.getParameter("lastName"))) {
             request.setAttribute("lastName",
                     PropertyReader.getValue("error.require", "Last Name"));
             pass = false;
         }
-
+        else if (!DataValidator.isValidName(request.getParameter("lastName"))) {
+        	request.setAttribute("lastName",
+                    PropertyReader.getValue("error.require", "First Name"));
+            pass = false;
+        }
         if (DataValidator.isNull(login)) {
             request.setAttribute("login",
                     PropertyReader.getValue("error.require", "Login Id"));
@@ -194,7 +201,7 @@ public class UserCtl extends BaseCtl {
         // get model
         UserModel model = new UserModel();
         long id = DataUtility.getLong(request.getParameter("id"));
-        if (OP_SAVE.equalsIgnoreCase(op)) {
+        if (OP_SAVE.equalsIgnoreCase(op)|| OP_UPDATE.equalsIgnoreCase(op)) {
             UserBean bean = (UserBean) populateBean(request);
             try {
                 if (id > 0) {
